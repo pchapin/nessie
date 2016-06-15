@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.docbook.org/xml/4.5/docbookx.dtd" [
+  
+<!ELEMENT xi:include (xi:fallback?) >
+<!ATTLIST xi:include
+    xmlns:xi   CDATA      #FIXED     "http://www.w3.org/2001/XInclude"
+    href       CDATA      #REQUIRED
+    parse      (xml|text) "xml"
+    encoding   CDATA      #IMPLIED >
+<!ELEMENT xi:fallback ANY>
+<!ATTLIST xi:fallback
+    xmlsn:xi   CDATA      #FIXED     "http://www.w3.org/2001/XInclude" >
+<!ENTITY % local.chapter.class "| xi:include">
+<!ENTITY % local.section.class "| xi:include"> 
+]>
+  
+<chapter id="Language">
+  <title>Nessie Language</title>
+
+  <para>This chapter contains the specification of the Nessie language. Nessie is intended to be
+    an educational subset of the nesC Programming language.</para>
+
+  <para>NesC is...</para>
+
+  <para>Nessie is...</para>
+
+  <para>Ideally any Nessie program would compile as a nesC program allowing the normal nesC
+    compiler to be used as a tool during the development and testing of Nessie code. In practice
+    this ideal might not be followed 100% in the specification below. However, areas where
+    Nessie is incompatible with nesC should be minimized and ultimately removed.</para>
+
+</chapter>

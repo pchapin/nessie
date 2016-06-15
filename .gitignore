@@ -1,0 +1,10 @@
+.idea/workspace.xml
+
+# IntelliJ build artifacts.
+doc/scaladoc
+build
+
+# ANTLR build artifacts.
+NesC.tokens
+NesCLexer.java
+NesCParser.java

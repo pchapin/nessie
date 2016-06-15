@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.docbook.org/xml/4.5/docbookx.dtd" [
+
+<!ELEMENT xi:include (xi:fallback?) >
+<!ATTLIST xi:include
+    xmlns:xi   CDATA      #FIXED     "http://www.w3.org/2001/XInclude"
+    href       CDATA      #REQUIRED
+    parse      (xml|text) "xml"
+    encoding   CDATA      #IMPLIED >
+<!ELEMENT xi:fallback ANY>
+<!ATTLIST xi:fallback
+    xmlsn:xi   CDATA      #FIXED     "http://www.w3.org/2001/XInclude" >
+<!ENTITY % local.chapter.class "| xi:include">
+<!ENTITY % local.section.class "| xi:include">
+]>
+
+<!-- FILE        : Daja.xml
+     SUBJECT     : Master document for the Nessie documentation set.
+     AUTHOR      : (C) Copyright 2014 by Peter C. Chapin <PChapin@vtc.vsc.edu>
+
+This is the documentation for the Nessie nesC compiler. -->
+
+<book status="draft">
+  <bookinfo>
+    <title>Nessie</title>
+    <author>
+      <firstname>Peter</firstname>
+      <surname>Chapin</surname>
+      <othername role="mi">C.</othername>
+      <affiliation>
+        <orgname>Vermont Technical College</orgname>
+        <orgdiv>Computer Information Systems Department</orgdiv>
+      </affiliation>
+    </author>
+    <authorinitials>pcc</authorinitials>
+    <copyright>
+      <year>2014</year>
+      <holder>Peter C. Chapin</holder>
+    </copyright>
+    <legalnotice>
+      <para> Permission is granted to copy, distribute and/or modify this document under the
+        terms of the GNU Free Documentation License, Version 1.1 or any later version published
+        by the Free Software Foundation; with the Invariant Sections being LIST THEIR TITLES,
+        with the Front-Cover Texts being LIST, and with the Back-Cover Texts being LIST. A copy
+        of the license is included in the section entitled "GNU Free Documentation License".
+      </para>
+    </legalnotice>
+    <!-- Do we really want to include this revision history now? -->
+    <revhistory>
+      <revision>
+        <revnumber>1.0</revnumber>
+        <date>2020-12-31</date>
+        <authorinitials>pcc</authorinitials>
+        <revremark>This is a work in progress. Release 1.0 is scheduled for the end of
+          2020.</revremark>
+      </revision>
+    </revhistory>
+  </bookinfo>
+  <preface id="Introduction">
+    <title>Introduction</title>
+
+    <para>Nessie is an educational compiler for a subset of the nesC programming language.
+      Nessie is not intended to be a full scale implementation of nesC but rather it takes
+      inspiration from nesC. Nessie is a small language suitable for implementation as a student
+      project in a compiler course. At some future time Nessie might (or might not) be expanded
+      to cover a larger portion of nesC. However, fully implementing nesC is not a primary goal
+      of this project.</para>
+
+    <para>This documentation describes both the design and use of the Nessie compiler.</para>
+
+    <!-- Include disclaimer. -->
+
+  </preface>
+
+  <xi:include href="Vision.xml"/>
+  <xi:include href="Build.xml"/>
+  <xi:include href="Language.xml"/>
+  <xi:include href="User.xml"/>
+  <xi:include href="Requirements.xml"/>
+  <xi:include href="Design.xml"/>
+
+  <!-- <bibliography> ... </bibliography> -->
+
+</book>

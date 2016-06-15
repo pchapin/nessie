@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.docbook.org/xml/4.5/docbookx.dtd">
+  
+<chapter id="Vision">
+  <title>Nessie Vision Statement</title>
+
+  <para>In this section we outline the philosophy and long range goals of Nessie. By doing so we
+    put Nessie in context and sketch an overall vision for the project. The vision is intended
+    to guide the project's development and be the source of its requirements.</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>Nessie's primary purpose is to support education in the area of compiler
+        construction. It thus should support that purpose by providing good documentation, offer
+        a relatively simple design, and illustrate good software engineering principles</para>
+    </listitem>
+  </itemizedlist>
+
+</chapter>

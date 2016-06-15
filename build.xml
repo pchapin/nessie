@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Nessie" default="scaladoc" basedir=".">
+    <description>Builds documentation for Nessie.</description>
+
+  <!-- Set global properties for all builds. -->
+  <property environment="env"/>
+  <property name="scala.home"         location="${env.SCALA_HOME}"/>
+  <property name="scala-library.jar"  location="${scala.home}/lib/scala-library.jar"/>
+  <property name="scala-reflect.jar"  location="${scala.home}/lib/scala-reflect.jar"/>
+  <property name="scala-parsers.jar"  location="${scala.home}/lib/scala-parser-combinators_2.11-1.0.2.jar"/>
+  <property name="scala-xml.jar"      location="${scala.home}/lib/scala-xml_2.11-1.0.2.jar"/>
+  <property name="scala-compiler.jar" location="${scala.home}/lib/scala-compiler.jar"/>
+  <property name="ANTLR.jar"          location="lib/antlr-3.4.jar"/>
+  <property name="scalatest.jar"      location="lib/scalatest_2.11-2.1.5.jar"/>
+
+  <target name="init">
+    <!-- Get the Scala related tasks. -->
+    <taskdef resource="scala/tools/ant/antlib.xml">
+      <classpath>
+        <pathelement location="${scala-compiler.jar}"/>
+        <pathelement location="${scala-reflect.jar}"/>
+        <pathelement location="${scala-library.jar}"/>
+        <pathelement location="${scala-xml.jar}"/>
+        <pathelement location="${scala-parsers.jar}"/>
+      </classpath>
+    </taskdef>
+
+    <!-- Create the time stamp -->
+    <tstamp/>
+  </target>
+
+
+  <target name="scaladoc" depends="init" description="Generate the Scaladoc" >
+
+    <!-- Classpath used during compilation. -->
+    <path id="build.classpath">
+      <pathelement location="${scala-library.jar}"/>
+      <pathelement location="${scala-reflect.jar}"/>
+      <pathelement location="${scala-xml.jar}"/>
+      <pathelement location="${scala-parsers.jar}"/>
+      <pathelement location="${ANTLR.jar}"/>
+      <pathelement location="${scalatest.jar}"/>
+      <pathelement location="build/production/Nessie"/>
+    </path>
+
+    <mkdir dir="doc/scaladoc"/>
+    <scaladoc srcdir="src"
+              destdir="doc/scaladoc"
+              deprecation="yes"
+              unchecked="yes"
+              doctitle="Nessie Internal Documentation"
+              classpathref="build.classpath">
+      <include name="**/*.scala"/>
+    </scaladoc>
+  </target>
+
+  <target name="clean" description="Clean up">
+    <delete dir="doc/scaladoc"/>
+  </target>
+
+</project>
