@@ -1,8 +1,7 @@
-.idea/workspace.xml
 
-# IntelliJ build artifacts.
-doc/scaladoc
-build
+# SBT build artifacts.
+target/
+.bsp/
 
 # ANTLR build artifacts.
 NesC.tokens
