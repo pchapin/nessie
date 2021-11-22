@@ -19,15 +19,15 @@ object Symbols {
   class SymbolRedefinitionException(message: String) extends Exception(message)
   
   /**
-   * Look in the symbol table of the current node and its parents for the type associated with a variable name. This
-   * method returns NesCTypes.Uninit in cases where the symbol is not found. Are those cases ruled out by the parser?
-   * Should an exception be thrown instead?
+   * Look in the symbol table of the current node and its parents for the type associated with a
+   * variable name. This method returns NesCTypes.Uninit in cases where the symbol is not found.
+   * Are those cases ruled out by the parser? Should an exception be thrown instead?
    * 
    * @param node The ASTNode where the search begins.
    * @param name The name of the variable to locate.
-   * @return The type representation of the specified variable. If the variable is not declared in the scope of the
-   *         given node, the parent scope will be searched recursively to the top level. If the symbol is not found
-   *         NesCTypes.Uninit is returned.
+   * @return The type representation of the specified variable. If the variable is not declared
+   *         in the scope of the given node, the parent scope will be searched recursively to
+   *         the top level. If the symbol is not found NesCTypes.Uninit is returned.
    */
   def lookupVariable(node: ASTNode, name: String): NesCTypes.Representation = {
     val ASTNode(_, _, _, parent, symbols) = node
@@ -108,13 +108,13 @@ object Symbols {
   }
   
   /**
-   * Process all declarations in a given AST and create appropriate symbol tables for them. This method has side
-   * effects. When it returns the AST rooted at the given node will have symbol table information installed related to
-   * the declarations embedded in the AST.
+   * Process all declarations in a given AST and create appropriate symbol tables for them. This
+   * method has side effects. When it returns the AST rooted at the given node will have symbol
+   * table information installed related to the declarations embedded in the AST.
    * 
    * @param node The AST to be decorated.
    */
-  def decorateAST(node: ASTNode) {
+  def decorateAST(node: ASTNode): Unit = {
     node match {
       case ASTNode(NesCLexer.DECLARATION, text, children, parent, symbolTable) =>
         val (structList, symbolList) = Declarations.extractDeclaredNames(node)

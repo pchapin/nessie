@@ -10,8 +10,9 @@ object Declarations {
   private def extractImportsExports(abstractSyntax: ASTNode, marker: Int): Set[String] = {
 
     /**
-     * Walks the abstract syntax tree of a nesC declaration (normally a command declaration but this method is intended
-     * to be general) and returns a set of the declared names. For example in a declaration such as
+     * Walks the abstract syntax tree of a nesC declaration (normally a command declaration but
+     * this method is intended to be general) and returns a set of the declared names. For
+     * example in a declaration such as
      *
      *     command int com1(int x), com2(int x, int y);
      *
@@ -37,7 +38,7 @@ object Declarations {
             // Loop needed to deal with multiple init_declarators in a declaration.
             for (child <- declarationFragment.children) yield extractNames(child)
         }
-        (Set[String]() /: namesInFragment)(_ union _)
+        namesInFragment.foldLeft(Set[String]())(_ union _)
       }
     
       extractNames(declaration)
@@ -54,7 +55,7 @@ object Declarations {
       case _ =>
         for (child <- abstractSyntax.children) yield extractImportsExports(child, marker)
     }
-    (Set[String]() /: childImports)(_ union _)
+    childImports.foldLeft(Set[String]())(_ union _)
   }
   
   
@@ -116,8 +117,8 @@ object Declarations {
         List()
     }
   
-    // If the declaration is a function definition, the FUNCTION_DEFINITION node is used as the main declaration node,
-    // as its children mirror a normal declaration.
+    // If the declaration is a function definition, the FUNCTION_DEFINITION node is used as the
+    // main declaration node, as its children mirror a normal declaration.
     def getDecNode(declaration: ASTNode): ASTNode = {
       if (existsChild(declaration, NesCLexer.FUNCTION_DEFINITION))
         findChild(declaration, NesCLexer.FUNCTION_DEFINITION)
@@ -125,8 +126,8 @@ object Declarations {
         declaration
     }
 
-    // Looks at the children of the declaration to find the node with the type information in it.  Either primary type
-    // or return type for a function.
+    // Looks at the children of the declaration to find the node with the type information in
+    // it. Either primary type or return type for a function.
     def getDecType(declarationNode: ASTNode): ASTNode = {
       for (i <- 0 until declarationNode.children.length) {
         if (declarationNode.children(i).tokenType == NesCLexer.DECLARATOR ||
@@ -137,8 +138,9 @@ object Declarations {
       declarationNode.children(0)
     }
     
-    // Deals with the case where the declaration is a structure declaration. Right now can only declare a new structure
-    // type or declare a value of an existing type. Ideally could do both at once, logic can be changed to reflect this.
+    // Deals with the case where the declaration is a structure declaration. Right now can only
+    // declare a new structure type or declare a value of an existing type. Ideally could do
+    // both at once, logic can be changed to reflect this.
     def declareNewStruct(declarationNode: ASTNode): (List[(String, NesCTypes.Representation)],
                                                      List[(String, NesCTypes.Representation)])    = {
       val structNode = declarationNode.children(0)
@@ -203,7 +205,8 @@ object Declarations {
     if (decList.length == 0)
       return (List(), List("NULL" -> declaredType))
     
-    // Goes through each declared variable and makes a pair that maps the variable to the declared type.
+    // Goes through each declared variable and makes a pair that maps the variable to the
+    // declared type.
     val declaratorList =
       for (declarationChild <- decList) yield {
         

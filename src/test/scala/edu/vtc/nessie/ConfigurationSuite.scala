@@ -1,9 +1,10 @@
 package edu.vtc.nessie
 
-import org.scalatest.{Assertions, FunSuite}
-import org.scalatest.Matchers
+import org.scalatest._
+import funsuite._
+import matchers._
 
-class ConfigurationSuite extends FunSuite with Assertions with Matchers {
+class ConfigurationSuite extends AnyFunSuite with Assertions with should.Matchers {
 
   test("Basic configuration") {
     // This test is rather limited. It should be enhanced at some point.

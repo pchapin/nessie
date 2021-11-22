@@ -1,11 +1,12 @@
 package edu.vtc.nesc.parser
 
-import org.scalatest.{Assertions, FunSuite}
-import org.scalatest.Matchers
+import org.scalatest._
+import funsuite._
+import matchers._
 import java.io.{FileInputStream, File}
 import org.antlr.runtime.{CommonTokenStream, ANTLRInputStream}
 
-class NesCParserSuite extends FunSuite with Assertions with Matchers {
+class NesCParserSuite extends AnyFunSuite with Assertions with should.Matchers {
   
   private val testRoot       = new File("testData")
   private val testSyntax     = new File(testRoot, "Syntax")
@@ -13,9 +14,10 @@ class NesCParserSuite extends FunSuite with Assertions with Matchers {
   private val syntaxNegative = new File(testSyntax, "Negative")
 
   /**
-   * Create a fresh, empty symbol table stack. We don't want global symbols discovered in one test to influence the next
-   * test. Unlike normal nesC, global symbols defined in one file should not be carried over to the next. Thus this
-   * method must be used before each appropriate test.
+   * Create a fresh, empty symbol table stack. We don't want global symbols discovered in one
+   * test to influence the next test. Unlike normal nesC, global symbols defined in one file
+   * should not be carried over to the next. Thus this method must be used before each
+   * appropriate test.
    *
    * @return A fresh, empty symbol table stack.
    */
@@ -25,10 +27,10 @@ class NesCParserSuite extends FunSuite with Assertions with Matchers {
 
 
   /**
-   * Create a fresh global symbol table stack that is preloaded with certain type names from the TinyOS library. This
-   * symbol table stack is used in tests that are intended to process entire, realistic files. Unlike normal nesC,
-   * global symbols defined in one file should not be carried over to the next. Thus this method must be used before
-   * each appropriate test.
+   * Create a fresh global symbol table stack that is preloaded with certain type names from the
+   * TinyOS library. This symbol table stack is used in tests that are intended to process
+   * entire, realistic files. Unlike normal nesC, global symbols defined in one file should not
+   * be carried over to the next. Thus this method must be used before each appropriate test.
    *
    * @return A fresh global symbol table stack preloaded with certain type names.
    */
@@ -46,12 +48,14 @@ class NesCParserSuite extends FunSuite with Assertions with Matchers {
    * Execute test cases.
    * 
    * @param testCaseNames An array of file names representing the test cases.
-   * @param symbolInitializer Function that returns an initial symbol table manager to use for each test case.
-   * @param doParse A function that takes a NesCParser and executes the parse at a particular start symbol.
+   * @param symbolInitializer Function that returns an initial symbol table manager to use for
+   * each test case.
+   * @param doParse A function that takes a NesCParser and executes the parse at a particular
+   * start symbol.
    */
   private def doTests(testCaseNames    : Array[String],
                       symbolInitializer: () => ParserSymbolsManager,
-                      doParse          : NesCParser => Unit) {
+                      doParse          : NesCParser => Unit): Unit = {
     
     for (testCaseName <- testCaseNames) {
       val testCase = new File(syntaxPositive, testCaseName)
@@ -69,24 +73,24 @@ class NesCParserSuite extends FunSuite with Assertions with Matchers {
     }
   }
 
-  private def doWholeFileTests(testCaseNames: Array[String]) {
-    doTests(testCaseNames, initializeGlobalSymbols, _.nesC_file())
+  private def doWholeFileTests(testCaseNames: Array[String]): Unit = {
+    doTests(testCaseNames, initializeGlobalSymbols, _.nesC_file(): @annotation.nowarn("msg=discarded non-Unit value"))
   }
 
-  private def doTranslationUnitTests(testCaseNames: Array[String]) {
-    doTests(testCaseNames, initializeGlobalSymbols, _.translation_unit())
+  private def doTranslationUnitTests(testCaseNames: Array[String]): Unit = {
+    doTests(testCaseNames, initializeGlobalSymbols, _.translation_unit(): @annotation.nowarn("msg=discarded non-Unit value"))
   }
 
-  private def doExpressionTests(testCaseNames: Array[String]) {
-    doTests(testCaseNames, initializeEmptySymbols, _.expression())
+  private def doExpressionTests(testCaseNames: Array[String]): Unit = {
+    doTests(testCaseNames, initializeEmptySymbols, _.expression(): @annotation.nowarn("msg=discarded non-Unit value"))
   }
 
-  private def doStatementTests(testCaseNames: Array[String]) {
-    doTests(testCaseNames, initializeEmptySymbols, _.statement())
+  private def doStatementTests(testCaseNames: Array[String]): Unit = {
+    doTests(testCaseNames, initializeEmptySymbols, _.statement(): @annotation.nowarn("msg=discarded non-Unit value"))
   }
 
-  private def doDeclarationTests(testCaseNames: Array[String]) {
-    doTests(testCaseNames, initializeEmptySymbols, _.declaration())
+  private def doDeclarationTests(testCaseNames: Array[String]): Unit = {
+    doTests(testCaseNames, initializeEmptySymbols, _.declaration(): @annotation.nowarn("msg=discarded non-Unit value"))
   }
 
   test("Basic Interface Test") {

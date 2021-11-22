@@ -14,8 +14,9 @@ import edu.vtc.nesc.parser._
 import edu.vtc.nessie.Main.CommandLineException
 
 /**
- * Object Main coordinates the high level activity of Nessie. It is responsible for reading the configuration file,
- * processing the command line, and running the various other processing phases.
+ * Object Main coordinates the high level activity of Nessie. It is responsible for reading the
+ * configuration file, processing the command line, and running the various other processing
+ * phases.
  *
  * @author Peter C. Chapin
  */
@@ -26,13 +27,15 @@ object Main {
   private def initializeGlobalSymbols(): ParserSymbolsManager = {
     val globalSymbols = new ParserSymbolsManager()
 
-    // These are type names built into the compiler other than the standard types defined by the language.
+    // These are type names built into the compiler other than the standard types defined by the
+    // language.
     val globalTypes = Array("__builtin_va_list", "bool", "error_t", "message_t")
 
-    // Configure a global ParserSymbolsManager. This is necessary because nesC's global scope spans all files in the
-    // program. That is, global entities declared in one file are visible in all other files compiled afterward. Right
-    // now, however, Nessie isn't smart enough to deal with this properly. This is a hacked work around: we "prime"
-    // the global symbol table with common type names from the TinyOS library. This should work fine for simple cases.
+    // Configure a global ParserSymbolsManager. This is necessary because nesC's global scope
+    // spans all files in the program. That is, global entities declared in one file are visible
+    // in all other files compiled afterward. Right now, however, Nessie isn't smart enough to
+    // deal with this properly. This is a hacked work around: we "prime" the global symbol table
+    // with common type names from the TinyOS library. This should work fine for simple cases.
     //
     for (typeName <- globalTypes) {
       globalSymbols.addType(typeName)
@@ -71,12 +74,13 @@ object Main {
 
 
   /**
-   * Display the abstract syntax tree both in ANTLR's tree notation and as rewritten source. This method is intended to
-   * be used as a debugging aid (and should probably be moved elsewhere at some point).
+   * Display the abstract syntax tree both in ANTLR's tree notation and as rewritten source.
+   * This method is intended to be used as a debugging aid (and should probably be moved
+   * elsewhere at some point).
    *
    * @param abstractSyntax The abstract syntax tree to be dumped.
    */
-  private def dumpSyntax(abstractSyntax: CommonTree) {
+  private def dumpSyntax(abstractSyntax: CommonTree): Unit = {
     val viewer = new SyntaxViewer(System.out, abstractSyntax)
     println("*** AST ==> ")
     viewer.writeAST()
@@ -90,10 +94,10 @@ object Main {
   /**
    * Displays a usage message.
    *
-   * This method is called when a command line error is encountered to alert the user to the supported command line
-   * options.
+   * This method is called when a command line error is encountered to alert the user to the
+   * supported command line options.
    */
-  private def displayUsage() {
+  private def displayUsage(): Unit = {
     val message = Array(
       "\nUsage",
       "java -jar Nessie.jar [options]",
@@ -118,9 +122,9 @@ object Main {
 
 
   /**
-   * Look up the value associated with a configuration setting. This method is used by displayConfiguration to
-   * encapsulate the handling of null values. Since some configuration values are not defined, it is necessary to check
-   * for that before trying to display them.
+   * Look up the value associated with a configuration setting. This method is used by
+   * displayConfiguration to encapsulate the handling of null values. Since some configuration
+   * values are not defined, it is necessary to check for that before trying to display them.
    *
    * @param configurationName The name of the configuration setting to look up.
    * @return The associated value or the string "null" if no such value exists.
@@ -140,11 +144,11 @@ object Main {
   /**
    * Displays the configuration settings that Nessie is using.
    *
-   * This method dumps all the configuration information that Nessie currently knows about. It is useful for debugging
-   * purposes by allowing the user to compare the settings Nessie is actually using with the settings the user
-   * <em>thinks</em> Nessie is using.
+   * This method dumps all the configuration information that Nessie currently knows about. It
+   * is useful for debugging purposes by allowing the user to compare the settings Nessie is
+   * actually using with the settings the user <em>thinks</em> Nessie is using.
    */
-  private def displayConfiguration() {
+  private def displayConfiguration(): Unit = {
     // TODO: This list is getting a little long for this hacked approach. Use a loop.
     println("Nessie Settings:\n")
     println("DebugMode       = " + configurationValue("DebugMode"))
@@ -159,19 +163,23 @@ object Main {
     
     
   /**
-   * Scan the command line looking for options. This method extracts all name=value pairs from the command line and
-   * loads them into the commandLineOptions map. Options with default values are preloaded so they will exist in the map
-   * when the method returns regardless of if they are provided on the command line or not.
+   * Scan the command line looking for options. This method extracts all name=value pairs from
+   * the command line and loads them into the commandLineOptions map. Options with default
+   * values are preloaded so they will exist in the map when the method returns regardless of if
+   * they are provided on the command line or not.
    * 
    * @param args The command line as given to the main method.
-   * @param commandLineOptions A map where information about the various command line options are placed.
-   * @throws edu.vtc.Nessie.Main.CommandLineException if there is a command line syntax error or some other similar
-   * command line problem.
+   * @param commandLineOptions A map where information about the various command line options
+   * are placed.
+   * 
+   * @throws edu.vtc.Nessie.Main.CommandLineException if there is a command line syntax error or
+   * some other similar command line problem.
    */
   private def analyzeCommandLine(args              : Array[String],
-                                 commandLineOptions: HashMap[String, String]) {
-    // Install some default (key, value) pairs for command line only options. Note that options corresponding to
-    // configuration settings are initialized in the configuration map in initializeConfiguration().
+                                 commandLineOptions: HashMap[String, String]): Unit = {
+    // Install some default (key, value) pairs for command line only options. Note that options
+    // corresponding to configuration settings are initialized in the configuration map in
+    // initializeConfiguration().
     //
     commandLineOptions.put("d", "false")
     commandLineOptions.put("s", "false")
@@ -262,14 +270,14 @@ object Main {
     
     
   /**
-   * Merges command line options into the configuration settings. This method blends the options selected by the user on
-   * the command line into the overall configuration information as obtained from the default settings and the config
-   * file. In effect this method translates the short (easy) option names into the longer and more verbose configuration
-   * setting names.
+   * Merges command line options into the configuration settings. This method blends the options
+   * selected by the user on the command line into the overall configuration information as
+   * obtained from the default settings and the config file. In effect this method translates
+   * the short (easy) option names into the longer and more verbose configuration setting names.
    * 
    * @param commandLineOptions Map of command line options as entered by the user.
    */
-  private def copyOptionsToConfiguration(commandLineOptions: HashMap[String, String]) {
+  private def copyOptionsToConfiguration(commandLineOptions: HashMap[String, String]): Unit = {
     val it = commandLineOptions.keySet().iterator()
     while (it.hasNext) {
       val key = it.next()
@@ -297,14 +305,15 @@ object Main {
     
     
   /**
-   * Creates an empty temporary folder. This method creates a folder to hold the results of preprocessing. It uses the
-   * name as specified by the command line options. If the folder exists, it is first erased. In this way the method
-   * ensures that the temporary folder is empty when it returns.
+   * Creates an empty temporary folder. This method creates a folder to hold the results of
+   * preprocessing. It uses the name as specified by the command line options. If the folder
+   * exists, it is first erased. In this way the method ensures that the temporary folder is
+   * empty when it returns.
    * 
-   * @throws edu.vtc.Nessie.Main.InvalidTemporaryFolderException if there is a problem creating the temporary folder
-   * (for example if there are permission problems).
+   * @throws edu.vtc.Nessie.Main.InvalidTemporaryFolderException if there is a problem creating
+   * the temporary folder (for example if there are permission problems).
    */
-  private def prepareTemporaryFolder() {
+  private def prepareTemporaryFolder(): Unit = {
     val temporaryFolderSetting = settings("TemporaryFolder")
     if (temporaryFolderSetting == None)
       throw new InvalidTemporaryFolderException("No temporary folder specified")
@@ -324,14 +333,15 @@ object Main {
     
     
   /**
-   * Creates an empty output folder. This method creates a folder to hold the results of Nessie's generation. It uses
-   * the name as specified by the command line options. If the folder exists, it is first erased. In this way the method
-   * ensures that the output folder is empty when it returns.
+   * Creates an empty output folder. This method creates a folder to hold the results of
+   * Nessie's generation. It uses the name as specified by the command line options. If the
+   * folder exists, it is first erased. In this way the method ensures that the output folder is
+   * empty when it returns.
    * 
-   * @throws edu.vtc.Nessie.Main.InvalidOutputFolderException if there is a problem creating the temporary folder (for
-   * example if there are permission problems).
+   * @throws edu.vtc.Nessie.Main.InvalidOutputFolderException if there is a problem creating the
+   * temporary folder (for example if there are permission problems).
    */
-  private def prepareOutputFolder() {
+  private def prepareOutputFolder(): Unit = {
     val outputFolderSetting = settings("OutputFolder")
     if (outputFolderSetting == None)
       throw new InvalidOutputFolderException("No output folder specified")
@@ -351,10 +361,11 @@ object Main {
     
     
   /**
-   * Preprocess the input program. This method runs the standard C preprocessor over all files in the input program,
-   * placing the result into a previously specified temporary folder. If the external process returns a bad status
-   * value, this method displays a message to the standard output but it otherwise continues working. Under such
-   * circumstances it is likely, however, that the resulting preprocessed program is invalid.
+   * Preprocess the input program. This method runs the standard C preprocessor over all files
+   * in the input program, placing the result into a previously specified temporary folder. If
+   * the external process returns a bad status value, this method displays a message to the
+   * standard output but it otherwise continues working. Under such circumstances it is likely,
+   * however, that the resulting preprocessed program is invalid.
    * 
    * @param inputFolder The name of the folder containing the program to preprocess.
    * @param nesCFiles A list of files to preprocess.
@@ -364,7 +375,7 @@ object Main {
    */
   private def preprocess(inputFolder    : File,
                          nesCFiles      : Array[String],
-                         temporaryFolder: File) {
+                         temporaryFolder: File): Unit = {
 
     for (fileName <- nesCFiles) {
       val inputName = new File(inputFolder, fileName)
@@ -376,15 +387,17 @@ object Main {
       val Some(preprocessorName) = settings("Preprocessor")
       commandLine.add(preprocessorName)
 
-      // This is hackish. I need to build up the same environment as the nesC compiler sees. Unfortunately the build
-      // scripts (Makefiles, etc) used with TinyOS are very complicated and hard to understand. Thus it's next to
-      // impossible (for me) to be sure I have this 100% correct. In any case it should be configurable so that users
-      // can specify different platforms with different "extras," to borrow a term from the TinyOS build scripts.
+      // This is hackish. I need to build up the same environment as the nesC compiler sees.
+      // Unfortunately the build scripts (Makefiles, etc) used with TinyOS are very complicated
+      // and hard to understand. Thus it's next to impossible (for me) to be sure I have this
+      // 100% correct. In any case it should be configurable so that users can specify different
+      // platforms with different "extras," to borrow a term from the TinyOS build scripts.
       //
-      // Really the notion of separate preprocessing of nesC files is flawed anyway. The nesC compiler actually (in
-      // effect) alternates between preprocessing and compiling as it processes the top level configuration and all the
-      // components and interfaces it uses. In general you can't accurately preprocess nesC one file at a time like I'm
-      // trying to do here.
+      // Really the notion of separate preprocessing of nesC files is flawed anyway. The nesC
+      // compiler actually (in effect) alternates between preprocessing and compiling as it
+      // processes the top level configuration and all the components and interfaces it uses. In
+      // general you can't accurately preprocess nesC one file at a time like I'm trying to do
+      // here.
       //
 
       commandLine.add("-D__GNUC__=4")             // TODO: Does cpp have a command line option for setting __GNUC__?
@@ -431,9 +444,9 @@ object Main {
     
     
   /**
-   * Execute Nessie's parsing phase. This method parses all the (preprocessed) input files into a collection of
-   * abstract syntax trees that are used by the rest of Nessie. In addition various bits of information about the
-   * input files are noticed and recorded.
+   * Execute Nessie's parsing phase. This method parses all the (preprocessed) input files into
+   * a collection of abstract syntax trees that are used by the rest of Nessie. In addition
+   * various bits of information about the input files are noticed and recorded.
    * 
    * @param temporaryFolder The folder where the files to parse are stored.
    * @param nesCFiles A list of files to parse.
@@ -465,8 +478,9 @@ object Main {
 
 
   /**
-   * Process the abstract syntax trees created during parsing. This method transforms the trees by removing all Spartan
-   * RPC related constructs and replacing them with appropriate constructs using pure nesC.
+   * Process the abstract syntax trees created during parsing. This method transforms the trees
+   * by removing all Spartan RPC related constructs and replacing them with appropriate
+   * constructs using pure nesC.
    *
    * @param parsedResults A collection of (filename, AST) pairs for all files in the program.
    * @return A collection of (filename, AST) pairs for the transformed program.
@@ -477,11 +491,13 @@ object Main {
     import edu.vtc.nesc.{ASTNode, TreeConverter}
 
     /**
-     * Examines an abstract syntax tree and returns an instance of an appropriate Processor object. A different kind of
-     * processor is returned depending on if the AST represents an interface, a configuration, or a module.
+     * Examines an abstract syntax tree and returns an instance of an appropriate Processor
+     * object. A different kind of processor is returned depending on if the AST represents an
+     * interface, a configuration, or a module.
      *
      * @param root The abstract syntax tree to examine.
-     * @return An appropriate processor instance for this tree or null if no appropriate Processor could be determined.
+     * @return An appropriate processor instance for this tree or null if no appropriate
+     * Processor could be determined.
      */
     def createProcessor(root: ASTNode): Processor = {
       // TODO: Handle binary components in a more intelligent way.
@@ -490,7 +506,8 @@ object Main {
         val nullProcessor: Processor = null
         node match {
 
-          // Interface tokens can appear in uses-provides specifications as well as when defining interfaces.
+          // Interface tokens can appear in uses-provides specifications as well as when
+          // defining interfaces.
           case ASTNode(NesCLexer.INTERFACE, _, children, _, _)
             if children(0).tokenType != NesCLexer.INTERFACE_TYPE => new InterfaceProcessor(root)
 
@@ -502,7 +519,8 @@ object Main {
               case NesCLexer.CONFIGURATION => new ConfigurationProcessor(root)
               case NesCLexer.MODULE => new ModuleProcessor(root)
 
-              // Generic configurations are handled with the same processor as non-generic ones (for now).
+              // Generic configurations are handled with the same processor as non-generic ones
+              // (for now).
               case NesCLexer.GENERIC =>
                 kindChildren(1).tokenType match {
                   case NesCLexer.CONFIGURATION => new ConfigurationProcessor(root)
@@ -512,7 +530,7 @@ object Main {
               case _ => nullProcessor      // This will be used for binary components (causing problems later).
             }
           case ASTNode(_, _, children, _, _) =>
-            (nullProcessor /: (children map scanSubtree)) ( (x, y) => if (x != null) x else y )
+            (children map scanSubtree).foldLeft(nullProcessor)( (x, y) => if (x != null) x else y )
         }
       }
       scanSubtree(root)
@@ -532,15 +550,15 @@ object Main {
 
 
   /**
-   * Outputs the (potentially modified) abstract syntax trees to ordinary nesC files in the output folder. Also copies
-   * any additional files required by Nessie's transformations.
+   * Outputs the (potentially modified) abstract syntax trees to ordinary nesC files in the
+   * output folder. Also copies any additional files required by Nessie's transformations.
    *
    * @param outputFolder The folder where the rewritten output files are stored.
    * @param processedResults A collection of abstract syntax trees representing the source
    * @throws IOException if there is a problem with file I/O.
    */
   private def rewritingPhase(outputFolder    : File,
-                             processedResults: Map[String, CommonTree]) {
+                             processedResults: Map[String, CommonTree]): Unit = {
     
     // Make path adjustments so that the output paths work as Cygwin paths.
     def windowsToCygwinPath(path: String) = {
@@ -563,7 +581,7 @@ object Main {
   }
     
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     var returnCode = 0
     try {
       // Deal with the command line.

@@ -3,13 +3,13 @@ package edu.vtc.nessie
 import java.io._
 
 /**
- * Class to manage a collection of (name, value) pairs that can be used to hold the configuration information used by a
- * program. This class provides facilities for reading settings from a configuration file and for processing a
- * collection of command line arguments.
+ * Class to manage a collection of (name, value) pairs that can be used to hold the
+ * configuration information used by a program. This class provides facilities for reading
+ * settings from a configuration file and for processing a collection of command line arguments.
  * 
- * @param configurableItems A map from the name of a configuration setting to a validation function. The validation
- * function is used to both check a candidate setting and to normalize the value of the setting into whatever form the
- * application finds convenient.
+ * @param configurableItems A map from the name of a configuration setting to a validation
+ * function. The validation function is used to both check a candidate setting and to normalize
+ * the value of the setting into whatever form the application finds convenient.
  */
 class ConfigurationSettings(private val configurableItems: Map[String, String => String]) {
   import ConfigurationSettings._
@@ -25,7 +25,7 @@ class ConfigurationSettings(private val configurableItems: Map[String, String =>
    * @throws BadNameException if a name is encountered that is not configurable.
    * @throws BadValidationException if a value does not pass validation.
    */
-  def setDefaults(defaultValues: Map[String, String]) {
+  def setDefaults(defaultValues: Map[String, String]): Unit = {
     for ((name, value) <- defaultValues) {
       put(name, value)
     }
@@ -33,13 +33,14 @@ class ConfigurationSettings(private val configurableItems: Map[String, String =>
 
 
   /**
-   * Remove all text from '#' to the end of the string. Any '#' embedded inside a quoted substring is treated as literal
-   * text.
+   * Remove all text from '#' to the end of the string. Any '#' embedded inside a quoted
+   * substring is treated as literal text.
    * 
    * @param line The string of text to modify.
    *
-   * @return The modified string. Note that in many cases the returned string will have trailing white space characters.
-   * For example an input string such as "Hello! # This is a comment" is returned as "Hello! ".
+   * @return The modified string. Note that in many cases the returned string will have trailing
+   * white space characters. For example an input string such as "Hello! # This is a comment" is
+   * returned as "Hello! ".
    */
   private def killComments(line: String): String = {
     object States extends Enumeration {
@@ -63,23 +64,25 @@ class ConfigurationSettings(private val configurableItems: Map[String, String =>
 
 
   /**
-   * Read a configuration file and use its contents to populate the settings map. The file consists of lines in the form
+   * Read a configuration file and use its contents to populate the settings map. The file
+   * consists of lines in the form
    *
    * name="value"
    *
-   * The name contains only normal identifier characters (letters, digits, and the underscore). The value can contain
-   * any text but the quotation marks are required in all cases. There can be only one (name, value) pair on each line.
-   * Blank lines are ignored. Leading white space, trailing white space, and white space around the '=' character are
-   * all ignored. White space inside the value string is part of the value. Comments start with a '#' character and go
-   * to the end of the line.
+   * The name contains only normal identifier characters (letters, digits, and the underscore).
+   * The value can contain any text but the quotation marks are required in all cases. There can
+   * be only one (name, value) pair on each line. Blank lines are ignored. Leading white space,
+   * trailing white space, and white space around the '=' character are all ignored. White space
+   * inside the value string is part of the value. Comments start with a '#' character and go to
+   * the end of the line.
    *
-   * @param fileName The name of the file to open. If the file can not be opened there is no effect (no exception is
-   * thrown and the settings map is unchanged).
+   * @param fileName The name of the file to open. If the file can not be opened there is no
+   * effect (no exception is thrown and the settings map is unchanged).
    *
    * @throws BadNameException if a name is encountered that is not configurable.
    * @throws BadValidationException if any of the file members fail to pass validation.
    */
-  def readConfigurationFile(fileName: String) {
+  def readConfigurationFile(fileName: String): Unit = {
     // TODO: This method does not allow the value to contain an '=' character.
     // TODO: If a name is found that is not among the set of allowed configurable items, it is silently ignored.
 
@@ -139,13 +142,14 @@ class ConfigurationSettings(private val configurableItems: Map[String, String =>
    * Adds an item to the configuration.
    *
    * @param name The name of the configuration item to add.
-   * @param value The value corresponding to the name. If the name already exists in the configuration its value is
-   * replaced by this value, otherwise the (name, value) pair is added
+   * @param value The value corresponding to the name. If the name already exists in the
+   * configuration its value is replaced by this value, otherwise the (name, value) pair is
+   * added
    *
    * @throws BadNameException if the name does not specify a configurable item.
    * @throws BadValidationException if the value does not pass validation.
    */
-  def put(name: String, value: String) {
+  def put(name: String, value: String): Unit = {
     if (configurableItems.contains(name))
       settings += ( name -> configurableItems(name)(value) )
     else
@@ -156,11 +160,12 @@ class ConfigurationSettings(private val configurableItems: Map[String, String =>
 
 
 /**
- * Companion object to hold a collection of useful data validation methods. Each method accepts a string to validate and
- * returns a possibly modified string that represents the result of an acceptable validation. If validation fails, a
- * BadValidationException is thrown. Programmers are free to use these methods, extend them, or ignore them as they see
- * fit. However, if a programmer uses a custom validation method it should conform to the same semantics as described
- * here.
+ * Companion object to hold a collection of useful data validation methods. Each method accepts
+ * a string to validate and returns a possibly modified string that represents the result of an
+ * acceptable validation. If validation fails, a BadValidationException is thrown. Programmers
+ * are free to use these methods, extend them, or ignore them as they see fit. However, if a
+ * programmer uses a custom validation method it should conform to the same semantics as
+ * described here.
  */
 object ConfigurationSettings {
 
@@ -171,8 +176,8 @@ object ConfigurationSettings {
   class BadValidationException(message: String) extends Exception(message)
 
   /**
-   * Validates boolean settings. The strings "true" or "t" (case insensitive) are normalized to "true." The strings
-   * "false" or "f" (case insensitive) are normalized to "false."
+   * Validates boolean settings. The strings "true" or "t" (case insensitive) are normalized to
+   * "true." The strings "false" or "f" (case insensitive) are normalized to "false."
    * 
    * @param raw The string to validate.
    * @throws BadValidationException if the raw string is not in the form described above.
@@ -201,9 +206,10 @@ object ConfigurationSettings {
       throw new BadValidationException("Invalid string (null reference)")
 
   /**
-   * Verifies that the given string looks like a valid path name on the host system. This validator does not attempt to
-   * verify if the specified file or directory exists or is readable, etc. In some applications it is not an error to
-   * configure the name of a non-existent file. More powerful validators can be defined that do check these features if
+   * Verifies that the given string looks like a valid path name on the host system. This
+   * validator does not attempt to verify if the specified file or directory exists or is
+   * readable, etc. In some applications it is not an error to configure the name of a
+   * non-existent file. More powerful validators can be defined that do check these features if
    * desired.
    */
   def basicPathValidator(raw: String) = {
